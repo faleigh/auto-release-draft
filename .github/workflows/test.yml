@@ -1,11 +1,10 @@
-name: 'Test'
+name: Test
 on:
   push:
     branches:
-      - master'
-
+      - main
 jobs:
-  test: # make sure build/ci work properly
+  test:
     name: Test
     runs-on: ${{ matrix.os }}
     strategy:
