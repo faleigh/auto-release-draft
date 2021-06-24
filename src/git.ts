@@ -1,6 +1,6 @@
+import * as core from '@actions/core'
 import {exec} from '@actions/exec'
 import {ExecOptions} from '@actions/exec/lib/interfaces'
-import * as core from '@actions/core'
 
 export async function getChangesIntroducedByTag(tag: string): Promise<string> {
   const previousVersionTag = await getPreviousVersionTag(tag)
@@ -10,10 +10,9 @@ export async function getChangesIntroducedByTag(tag: string): Promise<string> {
     : getCommitMessagesFrom(tag)
 }
 
-export async function getPreviousVersionTag(
-  tag: string
-): Promise<string | null> {
+export async function getPreviousVersionTag(tag: string): Promise<string | null> {
   let previousTag = ''
+
   const options: ExecOptions = {
     listeners: {
       stdout: (data: Buffer) => {
@@ -23,6 +22,7 @@ export async function getPreviousVersionTag(
     silent: true,
     ignoreReturnCode: true
   }
+
   const exitCode = await exec(
     'git',
     [
@@ -46,6 +46,7 @@ export async function getCommitMessagesBetween(
   secondTag: string
 ): Promise<string> {
   let commitMessages = ''
+
   const options: ExecOptions = {
     listeners: {
       stdout: (data: Buffer) => {
@@ -64,15 +65,15 @@ export async function getCommitMessagesBetween(
     ],
     options
   )
-  core.debug(
-    `The commit messages between ${firstTag} and ${secondTag} are: \n${commitMessages}`
-  )
+
+  core.debug(`The commit messages between ${firstTag} and ${secondTag} are:\n${commitMessages}`)
 
   return commitMessages.trim()
 }
 
 export async function getCommitMessagesFrom(tag: string): Promise<string> {
   let commitMessages = ''
+
   const options: ExecOptions = {
     listeners: {
       stdout: (data: Buffer) => {
@@ -91,7 +92,8 @@ export async function getCommitMessagesFrom(tag: string): Promise<string> {
     ],
     options
   )
-  core.debug(`The commit messages from ${tag} are: \n${commitMessages}`)
+
+  core.debug(`The commit messages from ${tag} are:\n${commitMessages}`)
 
   return commitMessages.trim()
 }
